@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="number1" />
+  <input type="text" id="operator" />
+  <input type="text" id="number2" />
+  <button id="btn">Rēķināt</button>
+  <p id="output"></p>
+
+  <script>
+    let numb1 = document.getElementById("number1");
+    let ope = document.getElementById("operator");
+    let numb2 = document.getElementById("number2");
+    let btn = document.getElementById("btn");
+    //let output = document.getElementById("output");
+    let output = document.querySelector("#output");
+
+    btn.addEventListener("click", handleClick);
+
+    function handleClick() {
+      let num1 = parseFloat(numb1.value);
+      let num2 = parseFloat(numb2.value);
+      let op = ope.value;
+
+      //checks the userš input and returns the according error
+      let errors = validateUserInput(num1, num2, op);
+
+      let result = "";
+      if (errors.length == 0) {
+        result = calc(num1, num2, op);
+      } else {
+        result = formatErrorList(errors)
+      }
+
+      //shows the result
+      displayResult(output, result);
+    }
+
+    function displayResult(outputElement, outputValue) {
+      outputElement.innerHTML = outputValue;
+    }
+
+    function calc(num1, num2, op) {
+      switch (op) {
+        case "+":
+          return num1 + num2;
+        case "-":
+          return num1 - num2;
+        case "*":
+          return num1 * num2;
+        case "/":
+          return num1 / num2;
+        default:
+          return "Kļūdaina darbība";
+      }
+    }
+
+    function displayResult(outputElement, outputText) {
+      outputElement.innerHTML = outputText;
+
+    }
+
+    function validateUserInput(n1, n2, opr) {
+      let errors = [];
+      if (isNaN(n1)) {
+        //error message
+        errors.push("Pirmais skaitlis nav ievadīts");
+      }
+      if (isNaN(n2)) {
+        errors.push("Otrais skaitlis nav ievadīts");
+      }
+
+      if (!["+", "-", "/", "*"].includes(opr)) {
+        errors.push("Ķļūdains operātors");
+      }
+
+      return errors;
+    }
+
+    function formatErrorList(errorArray) {
+      let htmlList = "<ul>";
+      for (let i = 0; i < errorArray.length; i++) {
+        htmlList += `<li>${errorArray[i]}</li>`;
+      }
+      htmlList += "</ul>";
+      return htmlList;
+    }
+
+  </script>
+</body>
+
+</html>
